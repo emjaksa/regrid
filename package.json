@@ -1,0 +1,221 @@
+{
+  "name": "regrid",
+  "version": "0.1.0",
+  "description": "React Data Grid",
+  "main": "dist/index.js",
+  "author": "Evan Jaksa",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/emjaksa/regrid/issues"
+  },
+  "homepage": "https://github.com/emjaksa/regrid#readme",
+  "scripts": {
+    "styleguide": "styleguidist server",
+    "styleguide:build": "styleguidist build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emjaksa/regrid.git"
+  },
+  "keywords": [
+    "Data",
+    "Grid",
+    "React",
+    "List",
+    "Table",
+    "Windowing",
+    "Virtual",
+    "List"
+  ],
+  "dependencies": {
+    "prop-types": "^15.5.10",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-core": "^6.24.1",
+    "babel-eslint": "^7.2.3",
+    "babel-jest": "^20.0.1",
+    "babel-loader": "^7.0.0",
+    "babel-plugin-lodash": "^3.2.11",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
+    "babel-polyfill": "^6.23.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-react-optimize": "^1.0.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "eslint-config-airbnb": "^15.0.1",
+    "eslint-loader": "^1.7.1",
+    "eslint-plugin-compat": "^1.0.3",
+    "eslint-plugin-react": "^7.0.1",
+    "react-styleguidist": "^5.2.1",
+    "webpack": "^2.6.1"
+  },
+  "browserslist": [
+    "last 2 versions",
+    "Explorer >= 10"
+  ],
+  "babel": {
+    "passPerPreset": true,
+    "presets": [
+      "react",
+      "es2015",
+      "stage-0"
+    ],
+    "plugins": [
+      "transform-decorators-legacy",
+      "lodash"
+    ],
+    "env": {
+      "production": {
+        "presets": [
+          "react-optimize"
+        ]
+      }
+    }
+  },
+  "eslintConfig": {
+    "parser": "babel-eslint",
+    "plugins": [
+      "compat"
+    ],
+    "extends": "airbnb",
+    "env": {
+      "browser": true
+    },
+    "globals": {
+      "__DEBUG__": true,
+      "__WATCH__": true,
+      "__VERBOSE__": true,
+      "__API_SERVER__": true,
+      "__API_BASENAME__": true,
+      "__PUBLIC_PATH__": true,
+      "__BASENAME__": true,
+      "test": true,
+      "describe": true,
+      "it": true,
+      "jest": true,
+      "expect": true,
+      "Observable": true
+    },
+    "rules": {
+      "react/no-multi-comp": [
+        2,
+        {
+          "ignoreStateless": false
+        }
+      ],
+      "semi": [
+        "error",
+        "never"
+      ],
+      "import/no-extraneous-dependencies": "off",
+      "import/extensions": "off",
+      "import/no-unresolved": "off",
+      "react/jsx-filename-extension": "off",
+      "react/jsx-indent": "off",
+      "react/jsx-tag-spacing": "off",
+      "react/jsx-space-before-closing": "off",
+      "react/require-default-props": "off",
+      "jsx-a11y/no-static-element-interactions": "off",
+      "jsx-a11y/img-has-alt": "off",
+      "max-len": "off",
+      "linebreak-style": "off",
+      "comma-dangle": [
+        "error",
+        "never"
+      ],
+      "arrow-parens": [
+        2,
+        "as-needed"
+      ],
+      "class-methods-use-this": [
+        "error",
+        {
+          "exceptMethods": [
+            "render",
+            "getInitialState",
+            "getDefaultProps",
+            "getChildContext",
+            "componentWillMount",
+            "componentDidMount",
+            "componentWillReceiveProps",
+            "shouldComponentUpdate",
+            "componentWillUpdate",
+            "componentDidUpdate",
+            "componentWillUnmount",
+            "routerWillLeave"
+          ]
+        }
+      ],
+      "no-plusplus": [
+        "error",
+        {
+          "allowForLoopAfterthoughts": true
+        }
+      ],
+      "react/prop-types": [
+        2,
+        {
+          "ignore": [
+            "history",
+            "location",
+            "match"
+          ]
+        }
+      ]
+    }
+  },
+  "jest": {
+    "verbose": true,
+    "moduleNameMapper": {
+      "\\.(scss|sass|css|png)$": "identity-obj-proxy"
+    },
+    "roots": [
+      "src/"
+    ],
+    "globals": {
+      "__DEBUG__": false,
+      "__WATCH__": false,
+      "__VERBOSE__": false,
+      "__PUBLIC_PATH__": "/"
+    }
+  },
+  "stylelint": {
+    "extends": "stylelint-config-standard",
+    "plugins": [
+      "stylelint-no-unsupported-browser-features"
+    ],
+    "rules": {
+      "color-hex-case": "upper",
+      "color-hex-length": "long",
+      "declaration-empty-line-before": "never",
+      "unit-whitelist": [
+        "px",
+        "vh",
+        "%",
+        "ms",
+        "s",
+        "deg"
+      ],
+      "selector-pseudo-class-no-unknown": [
+        true,
+        {
+          "ignorePseudoClasses": [
+            "global"
+          ]
+        }
+      ],
+      "property-no-unknown": [
+        true,
+        {
+          "ignoreProperties": [
+            "/^lost-(.*)$/",
+            "font-smoothing"
+          ]
+        }
+      ]
+    }
+  }
+}
