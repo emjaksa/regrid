@@ -1,7 +1,9 @@
 Basic
 
-    <Grid>
-        <Column header="First Name" dataIndex="firstName"/>
-        <Column header="Last Name" dataIndex="lastName"/>
-        <Column header="Address Name" dataIndex="address"/>
+    const data = require('./lib/data').default;
+    <Grid data={data}>
+        <Column header="First Name" dataKey="firstName" />
+        <Column header="Last Name" dataKey="lastName" />
+        <Column header="Address" dataKey="address" />
+        <Column header="Phone Number" dataKey="phoneNumber" />
     </Grid>

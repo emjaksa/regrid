@@ -28,11 +28,15 @@
     "List"
   ],
   "dependencies": {
+    "immutable": "^3.8.1",
+    "lodash": "^4.17.4",
     "prop-types": "^15.5.10",
     "react": "^15.5.4",
-    "react-dom": "^15.5.4"
+    "react-dom": "^15.5.4",
+    "scrollbar-size": "^1.0.4"
   },
   "devDependencies": {
+    "autoprefixer": "^7.1.1",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",
     "babel-eslint": "^7.2.3",
@@ -49,7 +53,12 @@
     "eslint-loader": "^1.7.1",
     "eslint-plugin-compat": "^1.0.3",
     "eslint-plugin-react": "^7.0.1",
+    "faker": "^4.1.0",
+    "node-sass": "^4.5.3",
+    "postcss-loader": "^2.0.5",
     "react-styleguidist": "^5.2.1",
+    "sass-loader": "^6.0.5",
+    "style-loader": "^0.18.1",
     "webpack": "^2.6.1"
   },
   "browserslist": [

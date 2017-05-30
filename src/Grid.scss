@@ -1,0 +1,41 @@
+.grid {
+  max-width: 100%;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.headerWrapper {
+  display: flex;
+}
+
+.body {
+  outline: none;
+}
+
+.row {
+  display: flex;
+
+  .column {
+    &:last-child {
+      border-right: none;
+    }
+  }
+}
+
+.column {
+  outline: none;
+  padding: 0 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-right: 1px solid rgba(0, 0, 0, 0.15);
+
+  &:last-child {
+    border-right: none;
+  }
+}
