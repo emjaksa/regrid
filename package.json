@@ -33,7 +33,7 @@
     "prop-types": "^15.5.10",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
-    "scrollbar-size": "^1.0.4"
+    "react-scrollbar-size": "^2.0.0"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.1",

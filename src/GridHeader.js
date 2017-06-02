@@ -2,7 +2,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { childPropTypes } from './GridPropTypes'
-import scrollbarSize from 'scrollbar-size'
+import ScrollbarSize from 'react-scrollbar-size'
 
 import s from './Grid.scss'
 
@@ -30,21 +30,34 @@ class GridHeader extends Component {
     scrollbarWidth: null
   }
 
-  componentDidMount() {
+  scrollbarSizeLoad = (measurements) => {
     this.setState({
-      scrollbarWidth: scrollbarSize()
+      scrollbarWidth: measurements.scrollbarWidth
+    })
+  }
+
+  scrollbarSizeChange = (measurements) => {
+    this.setState({
+      scrollbarWidth: measurements.scrollbarWidth
     })
   }
 
   render() {
-    const { children, hasScrollbar } = this.props
+    const { children, hasScrollbar, translateX } = this.props
     const { scrollbarWidth } = this.state
     return (
       <div
         className={s.header}
         style={{ paddingRight: hasScrollbar ? scrollbarWidth : null }}
       >
-        <div className={s.headerWrapper}>
+        <ScrollbarSize
+          onLoad={this.scrollbarSizeLoad}
+          onChange={this.scrollbarSizeChange}
+        />
+        <div
+          className={s.headerWrapper}
+          style={{ transform: `translateX(-${translateX}px)` }}
+        >
           {children}
         </div>
       </div>

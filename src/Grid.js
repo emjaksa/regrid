@@ -13,6 +13,9 @@ class Grid extends Component {
     children: childPropTypes,
     rowCount: PropTypes.number,
     rowHeight: PropTypes.number,
+    height: PropTypes.number,
+    width: PropTypes.number,
+    id: PropTypes.string,
     data: PropTypes.arrayOf(PropTypes.object)
   }
 
@@ -22,18 +25,37 @@ class Grid extends Component {
   }
 
   static childContextTypes = {
-    rowHeight: PropTypes.number.isRequired,
+    rowHeight: PropTypes.number,
+    columnWidths: PropTypes.object,
+    setColumnWidth: PropTypes.func,
+    id: PropTypes.string
   }
 
   state = {
-    hasScrollbar: false
+    hasScrollbar: false,
+    columnWidths: {},
+    translateX: 0
   }
 
   getChildContext() {
-    const { rowHeight } = this.props
+    const { rowHeight, id } = this.props
+    const { columnWidths } = this.state
     return {
-      rowHeight
+      id,
+      rowHeight,
+      columnWidths,
+      setColumnWidth: this.setColumnWidth
     }
+  }
+
+  setColumnWidth = (key, width) => {
+    const { columnWidths } = this.state
+    this.setState({
+      columnWidths: {
+        ...columnWidths,
+        [key]: width
+      }
+    })
   }
 
   setHasScrollbar = hasScrollbar => {
@@ -42,24 +64,51 @@ class Grid extends Component {
     })
   }
 
+  setScrollHeight = (height) => {
+    let scrollHeight = height
+    if (height === 0) {
+      const { rowHeight } = this.props
+      scrollHeight = rowHeight
+    }
+    this.setState({ scrollHeight })
+  }
+
+  setGridState = (state, cb) => {
+    this.setState(state, cb)
+  }
+
   getRecord = index => {
     const { data } = this.props
     return data[index]
   }
 
+  onScroll = (e) => {
+    this.setState({ translateX: e.target.scrollLeft })
+  }
+
   render() {
-    const { children, data, rowCount: rowCountProp, rowHeight } = this.props
-    const { hasScrollbar } = this.state
+    const { children, data, rowCount: rowCountProp, rowHeight, height, width } = this.props
+    const { hasScrollbar, columnWidths, scrollHeight, translateX } = this.state
     const rowCount = rowCountProp || data.length
+    const newChildren = Children.map(children, child => React.cloneElement(child, {
+      width: columnWidths[child.props.dataKey] ? columnWidths[child.props.dataKey] : child.props.width
+    }))
+    const style = {
+      height,
+      width,
+      minWidth: width
+    }
     return (
-      <div className={s.grid}>
-        <GridHeader hasScrollbar={hasScrollbar}>{children}</GridHeader>
+      <div className={s.grid} style={style}>
+        <GridHeader translateX={translateX} hasScrollbar={hasScrollbar}>{newChildren}</GridHeader>
         <GridBody
-          setHasScrollbar={this.setHasScrollbar}
+          onScroll={this.onScroll}
+          setGridState={this.setGridState}
           rowCount={rowCount}
           rowHeight={rowHeight}
+          scrollHeight={scrollHeight}
           getRecord={this.getRecord}
-        >{children}</GridBody>
+        >{newChildren}</GridBody>
       </div>
     )
   }

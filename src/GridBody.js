@@ -2,6 +2,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { childPropTypes } from './GridPropTypes'
+import _ from 'lodash'
 
 import s from './Grid.scss'
 import GridRow from './GridRow'
@@ -11,7 +12,7 @@ class GridBody extends Component {
     rowCount: PropTypes.number.isRequired,
     rowHeight: PropTypes.number.isRequired,
     getRecord: PropTypes.func.isRequired,
-    setHasScrollbar: PropTypes.func.isRequired,
+    setGridState: PropTypes.func.isRequired,
     children: childPropTypes,
   }
 
@@ -19,53 +20,40 @@ class GridBody extends Component {
     scrollTop: 0
   }
 
-  handleScroll = (e) => {
+  handleVirtualScroll = _.throttle((e) => {
     this.setState({
       scrollTop: e.target.scrollTop,
     })
-  }
+  }, 250)
 
-  hasScrollbar = false
+  onScroll = e => {
+    const { onScroll } = this.props
+    onScroll(e)
+    this.setState({
+      scrollTop: e.target.scrollTop,
+    })
+    /*    e.persist()
+     this.handleVirtualScroll(e)*/
+  }
 
   componentDidMount() {
-    const { setHasScrollbar, rowCount, rowHeight } = this.props
-    const targetRect = this.scrollElement.getBoundingClientRect()
-    const totalHeight = rowCount * rowHeight
-    const scrollHeight = targetRect.height
+    const { setGridState, rowCount, rowHeight } = this.props
+    setTimeout(() => {
+      const targetRect = this.scrollElement.getBoundingClientRect()
+      const totalHeight = rowCount * rowHeight
+      const scrollHeight = targetRect.height
 
-    if (totalHeight > scrollHeight) {
-      this.hasScrollbar = true
-      setHasScrollbar(true)
-    }
-
-    this.setState({
-      scrollHeight
-    })
+      this.setState({ scrollHeight, componentDidMount: true }, () => {
+        setGridState({
+          hasScrollbar: totalHeight > scrollHeight && scrollHeight > rowHeight
+        })
+      })
+    }, 0)
   }
 
-  componentDidUpdate() {
-    const { setHasScrollbar, rowCount, rowHeight } = this.props
-    const totalHeight = rowCount * rowHeight
-    const { scrollHeight } = this.state
-
-    if ((totalHeight > scrollHeight) !== this.hasScrollbar) {
-      setHasScrollbar(totalHeight > scrollHeight)
-    }
-  }
-
-  render() {
-    const { scrollTop, scrollHeight } = this.state
-    const { rowCount, rowHeight, getRecord, children } = this.props
-    const totalHeight = rowCount * rowHeight
-
+  getRendedRows = (startIndex, endIndex) => {
+    const { getRecord, children } = this.props
     const items = []
-
-    const scrollBottom = scrollHeight + scrollTop
-
-    const startIndex = Math.max(0, Math.floor(scrollTop / rowHeight) - 5)
-    const endIndex = Math.min(rowCount, Math.ceil(scrollBottom / rowHeight) + 5)
-
-    //console.log(startIndex);
     let index = startIndex
     while (index < endIndex) {
       const record = getRecord(index)
@@ -78,6 +66,24 @@ class GridBody extends Component {
       )
       index++
     }
+    return items
+  }
+
+  render() {
+    const { scrollTop, componentDidMount, scrollHeight } = this.state
+    const { rowCount, rowHeight } = this.props
+    const totalHeight = rowCount * rowHeight
+
+    let items = []
+    const startIndex = Math.max(0, Math.floor(scrollTop / rowHeight) - 5)
+    // console.log(componentDidMount, scrollHeight)
+    if (scrollHeight && scrollHeight > rowHeight) {
+      const scrollBottom = scrollHeight + scrollTop
+      const endIndex = Math.min(rowCount, Math.ceil(scrollBottom / rowHeight) + 5)
+      items = this.getRendedRows(startIndex, endIndex)
+    } else if (componentDidMount && !scrollHeight || componentDidMount && scrollHeight < rowHeight) {
+      items = this.getRendedRows(0, rowCount)
+    }
 
     return (
       <div
@@ -85,9 +91,8 @@ class GridBody extends Component {
         ref={(e) => {
           this.scrollElement = e
         }}
-        tabIndex={2}
-        style={{ height: 300, overflow: 'auto' }}
-        onScroll={this.handleScroll}
+        style={{ overflow: 'auto', flex: scrollHeight < rowHeight ? 'none' : null }}
+        onScroll={this.onScroll}
       >
         <div style={{ height: totalHeight }}>
           <div style={{ transform: `translateY(${startIndex * rowHeight}px)` }}>

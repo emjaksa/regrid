@@ -1,12 +1,16 @@
 import faker from 'faker'
 
-const data = []
-for (let i = 0; i < 100000; i++) {
-  data.push({
-    firstName: faker.name.firstName(),
-    lastName: faker.name.lastName(),
-    address: faker.address.streetAddress(),
-    phoneNumber: faker.phone.phoneNumber()
-  })
+const getData = (size = 100) => {
+  const data = []
+  for (let i = 0; i < size; i++) {
+    data.push({
+      firstName: faker.name.firstName(),
+      lastName: faker.name.lastName(),
+      address: faker.address.streetAddress(),
+      phoneNumber: faker.phone.phoneNumber()
+    })
+  }
+  return data
 }
-export default data
+
+export default getData

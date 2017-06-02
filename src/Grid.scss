@@ -1,41 +1,64 @@
+$border-color: rgba(0, 0, 0, 0.15);
+
 .grid {
+  min-height: 100%;
+  max-height: 100%;
   max-width: 100%;
   width: 100%;
   overflow: hidden;
-  border: 1px solid rgba(0, 0, 0, 0.15);
+  border: 1px solid $border-color;
+  display: flex;
+  flex-direction: column;
+
+  &, * {
+    box-sizing: border-box;
+  }
 }
 
 .header {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  border-bottom: 1px solid $border-color;
 }
 
 .headerWrapper {
   display: flex;
 }
 
+.resizeHandle {
+  background-color: black;
+  opacity: 1;
+  position: absolute;
+  height: 100%;
+  z-index: 100;
+  cursor: col-resize;
+}
+
 .body {
   outline: none;
+  overflow: auto;
+  flex: 1;
 }
 
 .row {
   display: flex;
-
-  .column {
-    &:last-child {
-      border-right: none;
-    }
-  }
 }
 
 .column {
   outline: none;
-  padding: 0 12px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  border-right: 1px solid rgba(0, 0, 0, 0.15);
+  border-right: 1px solid $border-color;
+  position: relative;
 
   &:last-child {
-    border-right: none;
+    border-right-color: transparent;
   }
+}
+
+.cell {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding: 0 12px;
+}
+
+.columnInner {
+  display: inline;
 }

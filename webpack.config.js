@@ -1,6 +1,10 @@
 const autoprefixer = require('autoprefixer')
 
 module.exports = {
+  devServer: {
+    compress: true,
+    disableHostCheck: true,   // That solved it
+  },
   module: {
     rules: [
       {
